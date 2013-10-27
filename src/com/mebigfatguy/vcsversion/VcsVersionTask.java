@@ -73,6 +73,30 @@ public class VcsVersionTask extends Task {
     
     private void getSVNInfo() {
 
+        Pattern commitPattern = Pattern.compile("([^\\s]*)\\s+\\|.*", Pattern.CASE_INSENSITIVE);
+        Pattern datePattern = Pattern.compile("[^\\|]+\\|[^\\|]+\\|\\s*([\\|]*).*", Pattern.CASE_INSENSITIVE);
+        Pattern branchPattern = Pattern.compile("url:?.*/(.*)", Pattern.CASE_INSENSITIVE);
+
+        BufferedReader br = null;
+        try {
+            Map<Pattern, String> vcsProps = new HashMap<Pattern, String>();
+            if (revisionProp != null)
+                vcsProps.put(commitPattern, revisionProp);
+            if (dateProp != null)
+                vcsProps.put(datePattern, dateProp);
+            
+            fetchInfo(vcsProps, "svn", "log", "-l", "1");
+            
+            vcsProps.clear();
+            vcsProps.put(branchPattern, branchProp);
+            
+            fetchInfo(vcsProps, "svn", "info");
+            
+        } catch (Exception e) {
+            throw new BuildException("Failed getting svn log info", e);
+        } finally {
+            closeQuietly(br);
+        }
     }
     
     private void getGITInfo() {
@@ -104,6 +128,7 @@ public class VcsVersionTask extends Task {
     }
 
     private void getHGInfo() {
+        
         Pattern changesetPattern = Pattern.compile("changeset:?\\s*(.*)", Pattern.CASE_INSENSITIVE);
         Pattern datePattern = Pattern.compile("date:?\\s*(.*)", Pattern.CASE_INSENSITIVE);
         Pattern branchPattern = Pattern.compile("(.*)", Pattern.CASE_INSENSITIVE);
@@ -146,7 +171,7 @@ public class VcsVersionTask extends Task {
                 for (Map.Entry<Pattern, String> entry : vcsProps.entrySet()) {
                     Matcher m = entry.getKey().matcher(line);
                     if (m.matches()) {
-                        getProject().setProperty(entry.getValue(), m.group(1));
+                        getProject().setProperty(entry.getValue(), m.group(1).trim());
                     }
                 }
 
