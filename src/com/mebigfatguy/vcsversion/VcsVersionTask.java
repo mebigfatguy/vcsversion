@@ -89,7 +89,7 @@ public class VcsVersionTask extends Task {
             if (dateProp != null)
                 vcsProps.put(datePattern, dateProp);
             
-            fetchInfo(vcsProps, "git", "-n", "1");
+            fetchInfo(vcsProps, "git", "log", "-n", "1");
             
             vcsProps.clear();
             vcsProps.put(branchPattern, branchProp);
