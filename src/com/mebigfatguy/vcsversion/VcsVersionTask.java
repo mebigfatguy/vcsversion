@@ -77,7 +77,7 @@ public class VcsVersionTask extends Task {
     
     private void getGITInfo() {
 
-        Pattern gitCommitPattern = Pattern.compile("commit:?\\s*(.*)", Pattern.CASE_INSENSITIVE);
+        Pattern commitPattern = Pattern.compile("commit:?\\s*(.*)", Pattern.CASE_INSENSITIVE);
         Pattern datePattern = Pattern.compile("date:?\\s*(.*)", Pattern.CASE_INSENSITIVE);
         Pattern branchPattern = Pattern.compile("\\*\\s*(.*)", Pattern.CASE_INSENSITIVE);
 
@@ -85,7 +85,7 @@ public class VcsVersionTask extends Task {
         try {
             Map<Pattern, String> vcsProps = new HashMap<Pattern, String>();
             if (revisionProp != null)
-                vcsProps.put(gitCommitPattern, revisionProp);
+                vcsProps.put(commitPattern, revisionProp);
             if (dateProp != null)
                 vcsProps.put(datePattern, dateProp);
             
@@ -104,6 +104,30 @@ public class VcsVersionTask extends Task {
     }
 
     private void getHGInfo() {
+        Pattern changesetPattern = Pattern.compile("changeset:?\\s*(.*)", Pattern.CASE_INSENSITIVE);
+        Pattern datePattern = Pattern.compile("date:?\\s*(.*)", Pattern.CASE_INSENSITIVE);
+        Pattern branchPattern = Pattern.compile("(.*)", Pattern.CASE_INSENSITIVE);
+
+        BufferedReader br = null;
+        try {
+            Map<Pattern, String> vcsProps = new HashMap<Pattern, String>();
+            if (revisionProp != null)
+                vcsProps.put(changesetPattern, revisionProp);
+            if (dateProp != null)
+                vcsProps.put(datePattern, dateProp);
+            
+            fetchInfo(vcsProps, "hg", "log", "-l", "1");
+            
+            vcsProps.clear();
+            vcsProps.put(branchPattern, branchProp);
+            
+            fetchInfo(vcsProps, "hg", "branch");
+            
+        } catch (Exception e) {
+            throw new BuildException("Failed getting hg log info", e);
+        } finally {
+            closeQuietly(br);
+        }
 
     }
     
