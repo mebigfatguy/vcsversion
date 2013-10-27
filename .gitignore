@@ -1,0 +1,7 @@
+
+.settings
+classes
+*.jar
+lib
+version.properties
+

@@ -1,0 +1,84 @@
+<project name="vcsversion" default="jar" basedir="." xmlns:yank="antlib:com.mebigfatguy.yank">
+    
+    <property file="user.properties" />
+    <property file="build.properties" />
+    <property file="version.properties" />
+    
+    <property name="src.dir" value="${basedir}/src" />
+    <property name="classes.dir" value="${basedir}/classes" />
+    <property name="lib.dir" value="${basedir}/lib" />
+    <property name="conf.dir" value="${basedir}/conf" />
+    <property name="javac.source" value="1.5" />
+    <property name="javac.target" value="1.5" />
+    <property name="javac.deprecation" value="on" />
+    <property name="javac.debug" value="on" />
+    <property name="proxy.server" value="" />
+    <property name="vcsversion.version" value="0.1.0" />
+
+    <path id="vcsversion.classpath">
+        <pathelement location="${classes.dir}"/>
+        <pathelement location="${lib.dir}/ant-${ant_.version}.jar"/>
+    </path>
+
+    <target name="yank">
+        <mkdir dir="${lib.dir}"/>
+        <yank:yank yankFile="${basedir}/yank.xls" destination="${lib.dir}" proxyServer="${proxy.server}" source="true">
+            <server url="http://repo1.maven.org/maven2"/>
+            <generateVersions propertyFileName="${basedir}/version.properties" />
+        </yank:yank>
+    </target>
+        
+    <target name="init" depends="yank">
+        <mkdir dir="${classes.dir}"/>
+    </target>
+        
+    <target name="clean">
+        <delete dir="${classes.dir}"/>
+        <delete file="${basedir}/vcsversion-${vcsversion.version}.jar" />
+        <delete file="${basedir}/vcsversion-${vcsversion.version}-sources.jar" />
+    </target>
+        
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" source="${javac.source}" target="${javac.target}" deprecation="${javac.deprecation}" debug="${javac.debug}" includeantruntime="false">
+            <classpath refid="vcsversion.classpath" />
+        </javac>
+    </target>
+    
+    <target name="jar" depends="init,compile">
+        <jar destfile="${basedir}/vcsversion-${vcsversion.version}.jar">
+            <fileset dir="${classes.dir}">
+                <include name="**/*.class" />
+            </fileset>
+            <manifest>
+                <attribute name="vcsversion-version" value="${vcsversion.version}" />
+                <attribute name="Main-Class" value="com.mebigfatguy.vcsversion.VcsVersionTask" />
+                <attribute name="Application-Name" value="Vcs Version" />
+                <attribute name="Permissions" value="all-permissions" />
+                <attribute name="Codebase" value="*" />
+                <attribute name="Bundle-ManifestVersion" value="2" />
+                <attribute name="Bundle-Name" value="vcsversion" />
+                <attribute name="Bundle-SymbolicName" value="vcsversion; singleton:=true" />
+                <attribute name="Bundle-Version" value="${vcsversion.version}" />
+                <attribute name="Bundle-ClassPath" value="." />
+                <attribute name="Bundle-Vendor" value="vcsversion Project" />
+                <attribute name="Bundle-ActivationPolicy" value="lazy" />
+                <attribute name="Export-Package" value="com.mebigfatguy.vcsversion" />
+            </manifest>
+        </jar>
+    </target>
+	
+	<target name="test" depends="jar">
+		<taskdef name="vcsversion" classname="com.mebigfatguy.vcsversion.VcsVersionTask" classpath="${basedir}/vcsversion-${vcsversion.version}.jar"/>
+		<vcsversion vcs="git" revisionProperty="_rev_" dateProperty="_date_" branchProperty="_branch_"/>
+		<echo message="Revision = ${_rev_}"/>
+		  <echo message="Date = ${_date_}"/>
+	     <echo message="Branch = ${_branch_}"/>
+	</target>
+    
+    <target name="run" depends="jar">
+        <java classname="com.mebigfatguy.vcsversion.vcsversion" fork="true" classpathref="vcsversion.classpath">
+              <arg value="${basedir}/vcsversion-${vcsversion.version}.jar"/>
+        </java>
+    </target>
+    
+</project>
