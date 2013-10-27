@@ -14,7 +14,7 @@ import org.apache.tools.ant.Task;
 
 public class VcsVersionTask extends Task {
 
-    private enum VcsType {CVS, SVN, GIT, HG};
+    private enum VcsType {SVN, GIT, HG};
     
     private String vcs;
     private String revisionProp;
@@ -46,9 +46,6 @@ public class VcsVersionTask extends Task {
         VcsType type = VcsType.valueOf(vcs.toUpperCase());
         
         switch (type) {
-            case CVS:
-                getCVSInfo();
-                break;
                 
             case SVN:
                 getSVNInfo();
@@ -65,10 +62,6 @@ public class VcsVersionTask extends Task {
             default:
                 throw new BuildException("Unknown vcs type: " + vcs);
         }        
-    }
-
-    private void getCVSInfo() {
- 
     }
     
     private void getSVNInfo() {
