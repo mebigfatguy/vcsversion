@@ -1,6 +1,7 @@
 
 .settings
 classes
+javadoc
 *.jar
 lib
 version.properties
