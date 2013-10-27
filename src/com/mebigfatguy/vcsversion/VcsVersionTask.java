@@ -70,7 +70,6 @@ public class VcsVersionTask extends Task {
         Pattern datePattern = Pattern.compile("[^\\|]+\\|[^\\|]+\\|\\s*([\\|]*).*", Pattern.CASE_INSENSITIVE);
         Pattern branchPattern = Pattern.compile("url:?.*/(.*)", Pattern.CASE_INSENSITIVE);
 
-        BufferedReader br = null;
         try {
             Map<Pattern, String> vcsProps = new HashMap<Pattern, String>();
             if (revisionProp != null)
@@ -87,8 +86,6 @@ public class VcsVersionTask extends Task {
             
         } catch (Exception e) {
             throw new BuildException("Failed getting svn log info", e);
-        } finally {
-            closeQuietly(br);
         }
     }
     
@@ -98,7 +95,6 @@ public class VcsVersionTask extends Task {
         Pattern datePattern = Pattern.compile("date:?\\s*(.*)", Pattern.CASE_INSENSITIVE);
         Pattern branchPattern = Pattern.compile("\\*\\s*(.*)", Pattern.CASE_INSENSITIVE);
 
-        BufferedReader br = null;
         try {
             Map<Pattern, String> vcsProps = new HashMap<Pattern, String>();
             if (revisionProp != null)
@@ -115,8 +111,6 @@ public class VcsVersionTask extends Task {
             
         } catch (Exception e) {
             throw new BuildException("Failed getting git log info", e);
-        } finally {
-            closeQuietly(br);
         }
     }
 
@@ -126,7 +120,6 @@ public class VcsVersionTask extends Task {
         Pattern datePattern = Pattern.compile("date:?\\s*(.*)", Pattern.CASE_INSENSITIVE);
         Pattern branchPattern = Pattern.compile("(.*)", Pattern.CASE_INSENSITIVE);
 
-        BufferedReader br = null;
         try {
             Map<Pattern, String> vcsProps = new HashMap<Pattern, String>();
             if (revisionProp != null)
@@ -143,10 +136,7 @@ public class VcsVersionTask extends Task {
             
         } catch (Exception e) {
             throw new BuildException("Failed getting hg log info", e);
-        } finally {
-            closeQuietly(br);
         }
-
     }
     
     private void fetchInfo(Map<Pattern, String> vcsProps, String... commandLine) throws IOException, InterruptedException {
