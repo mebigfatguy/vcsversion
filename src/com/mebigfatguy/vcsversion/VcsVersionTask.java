@@ -94,12 +94,15 @@ public class VcsVersionTask extends Task {
             if (dateProp != null)
                 vcsProps.put(datePattern, dateProp);
             
-            fetchInfo(vcsProps, "svn", "log", "-l", "1");
+            if (!vcsProps.isEmpty())
+                fetchInfo(vcsProps, "svn", "log", "-l", "1");
             
             vcsProps.clear();
-            vcsProps.put(branchPattern, branchProp);
+            if (branchProp != null)
+                vcsProps.put(branchPattern, branchProp);
             
-            fetchInfo(vcsProps, "svn", "info");
+            if (!vcsProps.isEmpty())
+                fetchInfo(vcsProps, "svn", "info");
             
         } catch (Exception e) {
             throw new BuildException("Failed getting svn log info", e);
@@ -119,12 +122,15 @@ public class VcsVersionTask extends Task {
             if (dateProp != null)
                 vcsProps.put(datePattern, dateProp);
             
-            fetchInfo(vcsProps, "git", "log", "-n", "1");
+            if (!vcsProps.isEmpty())
+                fetchInfo(vcsProps, "git", "log", "-n", "1");
             
             vcsProps.clear();
-            vcsProps.put(branchPattern, branchProp);
+            if (branchProp != null)
+                vcsProps.put(branchPattern, branchProp);
             
-            fetchInfo(vcsProps, "git", "branch");
+            if (!vcsProps.isEmpty())
+                fetchInfo(vcsProps, "git", "branch");
             
         } catch (Exception e) {
             throw new BuildException("Failed getting git log info", e);
@@ -144,12 +150,15 @@ public class VcsVersionTask extends Task {
             if (dateProp != null)
                 vcsProps.put(datePattern, dateProp);
             
-            fetchInfo(vcsProps, "hg", "log", "-l", "1");
+            if (!vcsProps.isEmpty())
+                fetchInfo(vcsProps, "hg", "log", "-l", "1");
             
             vcsProps.clear();
-            vcsProps.put(branchPattern, branchProp);
+            if (branchProp != null)
+                vcsProps.put(branchPattern, branchProp);
             
-            fetchInfo(vcsProps, "hg", "branch");
+            if (!vcsProps.isEmpty())
+                fetchInfo(vcsProps, "hg", "branch");
             
         } catch (Exception e) {
             throw new BuildException("Failed getting hg log info", e);

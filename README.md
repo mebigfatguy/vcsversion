@@ -17,4 +17,6 @@ Then you can use your properties anywhere in the build xml, such as
             <attribute name="Date" value="${_date_}"/>
             <attribute name="Branch" value="${_branch_}"/>
         </manifest>
+        
+You do not need to supply all attributes, only the ones you want.
 
