@@ -1,0 +1,3 @@
+<antlib xmlns:vcsversion="ant:com.mebigfatguy.vcsversion">
+   <taskdef name="vcsversion" classname="com.mebigfatguy.vcsversion.VcsVersionTask"/>
+</antlib>

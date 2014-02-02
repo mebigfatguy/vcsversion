@@ -44,11 +44,20 @@
             <classpath refid="vcsversion.classpath" />
         </javac>
     </target>
+	
+   <target name="resources" description="copies files to classes">
+        <copy todir="${classes.dir}">
+            <fileset dir="${src.dir}">
+                <include name="**/*.xml"/>
+            </fileset>
+        </copy>
+    </target>
     
-    <target name="jar" depends="init,compile">
+    <target name="jar" depends="init,compile,resources">
         <jar destfile="${basedir}/vcsversion-${vcsversion.version}.jar">
             <fileset dir="${classes.dir}">
                 <include name="**/*.class" />
+                <include name="**/*.xml" />
             </fileset>
             <manifest>
                 <attribute name="vcsversion-version" value="${vcsversion.version}" />
