@@ -21,7 +21,9 @@ import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,7 +33,26 @@ import org.apache.tools.ant.Task;
 
 public class VcsVersionTask extends Task {
 
-    private enum VcsType {SVN, GIT, HG, BAZAAR};
+    private enum VcsType {
+        SVN("svn", "subversion"), GIT("git"), HG("hg", "mercurial"), BAZAAR("bzr", "bazaar");
+        
+        private List<String> aliases;
+        
+        VcsType(String... vcsAlias) {
+            aliases = Arrays.asList(vcsAlias);
+        }
+        
+        public static VcsType decode(String vcsAlias) {
+            vcsAlias = vcsAlias.toLowerCase();
+            for (VcsType vcs : VcsType.values()) {
+                if (vcs.aliases.indexOf(vcsAlias) >= 0) {
+                    return vcs;
+                }
+            }
+            
+            return null;
+        }
+    };
     
     private String vcs;
     private String revisionProp;
@@ -60,7 +81,7 @@ public class VcsVersionTask extends Task {
             throw new BuildException("Failed to provide ant property 'vcs'");
         }
         
-        VcsType type = VcsType.valueOf(vcs.toUpperCase());
+        VcsType type = VcsType.decode(vcs);
         
         switch (type) {
                 
