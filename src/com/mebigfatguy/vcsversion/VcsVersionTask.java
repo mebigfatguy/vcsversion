@@ -31,7 +31,7 @@ import org.apache.tools.ant.Task;
 
 public class VcsVersionTask extends Task {
 
-    private enum VcsType {SVN, GIT, HG};
+    private enum VcsType {SVN, GIT, HG, BAZAAR};
     
     private String vcs;
     private String revisionProp;
@@ -74,6 +74,10 @@ public class VcsVersionTask extends Task {
                 
             case HG:
                 getHGInfo();
+                break;
+                
+            case BAZAAR:
+                getBazaarInfo();
                 break;
                 
             default:
@@ -159,6 +163,29 @@ public class VcsVersionTask extends Task {
             
             if (!vcsProps.isEmpty())
                 fetchInfo(vcsProps, "hg", "branch");
+            
+        } catch (Exception e) {
+            throw new BuildException("Failed getting hg log info", e);
+        }
+    }
+    
+    private void getBazaarInfo() {
+        
+        Pattern revnoPattern = Pattern.compile("revno:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+        Pattern timestampPattern = Pattern.compile("timestamp:?\\s*(.*)", Pattern.CASE_INSENSITIVE);
+        Pattern branchPattern = Pattern.compile("branch nick:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+
+        try {
+            Map<Pattern, String> vcsProps = new HashMap<Pattern, String>();
+            if (revisionProp != null)
+                vcsProps.put(revnoPattern, revisionProp);
+            if (dateProp != null)
+                vcsProps.put(timestampPattern, dateProp);
+            if (branchProp != null)
+                vcsProps.put(branchPattern, branchProp);
+            
+            if (!vcsProps.isEmpty())
+                fetchInfo(vcsProps, "bzr", "log", "-r-1");
             
         } catch (Exception e) {
             throw new BuildException("Failed getting hg log info", e);
