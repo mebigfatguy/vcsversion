@@ -16,7 +16,7 @@ Use as follows:
         to include the 'vcsversion' task automatically.
         
         
-Then you can use your properties anywhere in the build xml, such as
+Then you can use your properties anywhere in the build.xml, such as
 
         <manifest>
             <attribute name="Revision" value="${_rev_}"/>
