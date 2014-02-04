@@ -26,3 +26,10 @@ Then you can use your properties anywhere in the build.xml, such as
         
 You do not need to supply all attributes, only the ones you want.
 
+
+VcsVersion is available at maven central with:
+
+        GroupId:    com.mebigfatguy.vcsversion
+        ArtifactId: vcsversion
+        Version:    0.2.0
+
