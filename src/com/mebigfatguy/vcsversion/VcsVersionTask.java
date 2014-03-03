@@ -108,23 +108,25 @@ public class VcsVersionTask extends Task {
     
     private void getSVNInfo() {
 
-        Pattern commitPattern = Pattern.compile("([^\\s]*)\\s+\\|.*", Pattern.CASE_INSENSITIVE);
-        Pattern datePattern = Pattern.compile("[^\\|]+\\|[^\\|]+\\|\\s*([\\|]*).*", Pattern.CASE_INSENSITIVE);
-        Pattern branchPattern = Pattern.compile("url:?.*/(.*)", Pattern.CASE_INSENSITIVE);
-
         try {
             Map<Pattern, String> vcsProps = new HashMap<Pattern, String>();
-            if (revisionProp != null)
+            if (revisionProp != null) {
+                Pattern commitPattern = Pattern.compile("([^\\s]*)\\s+\\|.*", Pattern.CASE_INSENSITIVE);
                 vcsProps.put(commitPattern, revisionProp);
-            if (dateProp != null)
+            }
+            if (dateProp != null) {
+                Pattern datePattern = Pattern.compile("[^\\|]+\\|[^\\|]+\\|\\s*([\\|]*).*", Pattern.CASE_INSENSITIVE);
                 vcsProps.put(datePattern, dateProp);
+            }
             
             if (!vcsProps.isEmpty())
                 fetchInfo(vcsProps, "svn", "log", "-l", "1");
             
             vcsProps.clear();
-            if (branchProp != null)
+            if (branchProp != null) {
+                Pattern branchPattern = Pattern.compile("url:?.*/(.*)", Pattern.CASE_INSENSITIVE);
                 vcsProps.put(branchPattern, branchProp);
+            }
             
             if (!vcsProps.isEmpty())
                 fetchInfo(vcsProps, "svn", "info");
@@ -136,23 +138,25 @@ public class VcsVersionTask extends Task {
     
     private void getGITInfo() {
 
-        Pattern commitPattern = Pattern.compile("commit:?\\s*(.*)", Pattern.CASE_INSENSITIVE);
-        Pattern datePattern = Pattern.compile("date:?\\s*(.*)", Pattern.CASE_INSENSITIVE);
-        Pattern branchPattern = Pattern.compile("\\*\\s*(.*)", Pattern.CASE_INSENSITIVE);
-
         try {
             Map<Pattern, String> vcsProps = new HashMap<Pattern, String>();
-            if (revisionProp != null)
+            if (revisionProp != null) {
+                Pattern commitPattern = Pattern.compile("commit:?\\s*(.*)", Pattern.CASE_INSENSITIVE);
                 vcsProps.put(commitPattern, revisionProp);
-            if (dateProp != null)
+            }
+            if (dateProp != null) {
+                Pattern datePattern = Pattern.compile("date:?\\s*(.*)", Pattern.CASE_INSENSITIVE);
                 vcsProps.put(datePattern, dateProp);
+            }
             
             if (!vcsProps.isEmpty())
                 fetchInfo(vcsProps, "git", "log", "-n", "1");
             
             vcsProps.clear();
-            if (branchProp != null)
+            if (branchProp != null) {
+                Pattern branchPattern = Pattern.compile("\\*\\s*(.*)", Pattern.CASE_INSENSITIVE);
                 vcsProps.put(branchPattern, branchProp);
+            }
             
             if (!vcsProps.isEmpty())
                 fetchInfo(vcsProps, "git", "branch");
@@ -163,24 +167,26 @@ public class VcsVersionTask extends Task {
     }
 
     private void getHGInfo() {
-        
-        Pattern changesetPattern = Pattern.compile("changeset:?\\s*(.*)", Pattern.CASE_INSENSITIVE);
-        Pattern datePattern = Pattern.compile("date:?\\s*(.*)", Pattern.CASE_INSENSITIVE);
-        Pattern branchPattern = Pattern.compile("(.*)", Pattern.CASE_INSENSITIVE);
 
         try {
             Map<Pattern, String> vcsProps = new HashMap<Pattern, String>();
-            if (revisionProp != null)
+            if (revisionProp != null) {
+                Pattern changesetPattern = Pattern.compile("changeset:?\\s*(.*)", Pattern.CASE_INSENSITIVE);
                 vcsProps.put(changesetPattern, revisionProp);
-            if (dateProp != null)
+            }
+            if (dateProp != null) {
+                Pattern datePattern = Pattern.compile("date:?\\s*(.*)", Pattern.CASE_INSENSITIVE);
                 vcsProps.put(datePattern, dateProp);
+            }
             
             if (!vcsProps.isEmpty())
                 fetchInfo(vcsProps, "hg", "log", "-l", "1");
             
             vcsProps.clear();
-            if (branchProp != null)
+            if (branchProp != null) {
+                Pattern branchPattern = Pattern.compile("(.*)", Pattern.CASE_INSENSITIVE);
                 vcsProps.put(branchPattern, branchProp);
+            }
             
             if (!vcsProps.isEmpty())
                 fetchInfo(vcsProps, "hg", "branch");
@@ -191,19 +197,21 @@ public class VcsVersionTask extends Task {
     }
     
     private void getBazaarInfo() {
-        
-        Pattern revnoPattern = Pattern.compile("revno:\\s*(.*)", Pattern.CASE_INSENSITIVE);
-        Pattern timestampPattern = Pattern.compile("timestamp:?\\s*(.*)", Pattern.CASE_INSENSITIVE);
-        Pattern branchPattern = Pattern.compile("branch nick:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 
         try {
             Map<Pattern, String> vcsProps = new HashMap<Pattern, String>();
-            if (revisionProp != null)
+            if (revisionProp != null) {
+                Pattern revnoPattern = Pattern.compile("revno:\\s*(.*)", Pattern.CASE_INSENSITIVE);
                 vcsProps.put(revnoPattern, revisionProp);
-            if (dateProp != null)
+            }
+            if (dateProp != null) {
+                Pattern timestampPattern = Pattern.compile("timestamp:?\\s*(.*)", Pattern.CASE_INSENSITIVE);
                 vcsProps.put(timestampPattern, dateProp);
-            if (branchProp != null)
+            }
+            if (branchProp != null) {
+                Pattern branchPattern = Pattern.compile("branch nick:\\s*(.*)", Pattern.CASE_INSENSITIVE);
                 vcsProps.put(branchPattern, branchProp);
+            }
             
             if (!vcsProps.isEmpty())
                 fetchInfo(vcsProps, "bzr", "log", "-r-1");
