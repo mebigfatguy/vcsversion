@@ -31,6 +31,7 @@
         
     <target name="init" depends="yank">
         <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${lib.dir}"/>
     </target>
         
     <target name="clean">
