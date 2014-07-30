@@ -36,7 +36,7 @@ public class VcsVersionTask extends Task {
     private enum VcsType {
         SVN("svn", "subversion"), GIT("git"), HG("hg", "mercurial"), BAZAAR("bzr", "bazaar");
         
-        private List<String> aliases;
+        private final List<String> aliases;
         
         VcsType(String... vcsAlias) {
             aliases = Arrays.asList(vcsAlias);
@@ -76,7 +76,8 @@ public class VcsVersionTask extends Task {
     }
     
     
-    public void execute() {
+    @Override
+	public void execute() {
         if (vcs == null) {
             throw new BuildException("Failed to provide ant property 'vcs'");
         }
@@ -247,7 +248,7 @@ public class VcsVersionTask extends Task {
         }
     }
     
-    private void closeQuietly(Closeable c) {
+    private static void closeQuietly(Closeable c) {
         try {
             if (c != null) {
                 c.close();
