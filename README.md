@@ -11,7 +11,7 @@ Use as follows:
         
         or you can use the namespace 
         
-        xmlns:vcs="antlib:com.mebigfatguy.vcsversion
+        xmlns:vcs="antlib:com.mebigfatguy.vcsversion"
         
         to include the 'vcsversion' task automatically.
         
