@@ -5,9 +5,10 @@
     <property file="version.properties" />
     
     <property name="src.dir" value="${basedir}/src" />
-    <property name="classes.dir" value="${basedir}/classes" />
+    <property name="target.dir" value="${basedir}/target" />
+    <property name="classes.dir" value="${target.dir}/classes" />
     <property name="lib.dir" value="${basedir}/lib" />
-    <property name="javadoc.dir" value="${basedir}/javadoc" />
+    <property name="javadoc.dir" value="${target.dir}/javadoc" />
     <property name="javac.source" value="1.5" />
     <property name="javac.target" value="1.5" />
     <property name="javac.deprecation" value="on" />
@@ -35,7 +36,7 @@
     </target>
         
     <target name="clean">
-        <delete dir="${classes.dir}"/>
+        <delete dir="${target.dir}"/>
         <delete file="${basedir}/vcsversion-${vcsversion.version}.jar" />
         <delete file="${basedir}/vcsversion-${vcsversion.version}-sources.jar" />
     </target>
@@ -55,7 +56,7 @@
     </target>
     
     <target name="jar" depends="init,compile,resources">
-        <jar destfile="${basedir}/vcsversion-${vcsversion.version}.jar">
+        <jar destfile="${target.dir}/vcsversion-${vcsversion.version}.jar">
             <fileset dir="${classes.dir}">
                 <include name="**/*.class" />
                 <include name="**/*.xml" />
@@ -88,12 +89,12 @@
     
     <target name="run" depends="jar">
         <java classname="com.mebigfatguy.vcsversion.vcsversion" fork="true" classpathref="vcsversion.classpath">
-              <arg value="${basedir}/vcsversion-${vcsversion.version}.jar"/>
+              <arg value="${target.dir}/vcsversion-${vcsversion.version}.jar"/>
         </java>
     </target>
 	
     <target name="srczip" description="builds the source distribution zip file">
-        <zip destfile="${basedir}/vcsversion-${vcsversion.version}-sources.jar">
+        <zip destfile="${target.dir}/vcsversion-${vcsversion.version}-sources.jar">
             <fileset dir="${basedir}">
                 <include name="**/*.java"/>
                 <include name="**/*.xml"/>
@@ -120,9 +121,9 @@
     
     <target name="sonatype" depends="release" description="prepare an artifact bundle for sonatype">
         <mkdir dir="${sonatype.dir}"/>
-        <copy todir="${sonatype.dir}" file="${basedir}/vcsversion-${vcsversion.version}.jar"/>
-        <copy tofile="${sonatype.dir}/vcsversion-${vcsversion.version}-sources.jar" file="${basedir}/vcsversion-${vcsversion.version}-sources.jar"/>
-        <jar destfile="${sonatype.dir}/vcsversion-${vcsversion.version}-javadoc.jar" basedir="${basedir}" includes="javadoc/**"/>
+        <copy todir="${sonatype.dir}" file="${target.dir}/vcsversion-${vcsversion.version}.jar"/>
+        <copy tofile="${sonatype.dir}/vcsversion-${vcsversion.version}-sources.jar" file="${target.dir}/vcsversion-${vcsversion.version}-sources.jar"/>
+        <jar destfile="${sonatype.dir}/vcsversion-${vcsversion.version}-javadoc.jar" basedir="${target.dir}" includes="javadoc/**"/>
         <copy tofile="${sonatype.dir}/vcsversion-${vcsversion.version}.pom" file="${basedir}/pom.xml"/>
         
         <exec executable="gpg">
