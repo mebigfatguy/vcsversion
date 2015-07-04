@@ -113,7 +113,7 @@
                  destdir="${javadoc.dir}"
                  windowtitle="vcsversion api">
             <doctitle><![CDATA[<h1>vcsversion javadoc</h1>]]></doctitle>
-            <bottom><![CDATA[<i>Copyright &#169; 2013 MeBigFatGuy.com. All Rights Reserved.</i>]]></bottom>
+            <bottom><![CDATA[<i>Copyright &#169; 2013-2015 MeBigFatGuy.com. All Rights Reserved.</i>]]></bottom>
         </javadoc>
     </target>
 	
