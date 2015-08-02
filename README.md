@@ -22,9 +22,11 @@ Then you can use your properties anywhere in the build.xml, such as
             <attribute name="Revision" value="${_rev_}"/>
             <attribute name="Date" value="${_date_}"/>
             <attribute name="Branch" value="${_branch_}"/>
+            <attribute name="URL" value=${_url_}"/>
         </manifest>
         
 You do not need to supply all attributes, only the ones you want.
+(Note, the URL attribute is available from 0.4.0 onwards).
 
 
 VcsVersion is available at maven central with:
