@@ -76,7 +76,7 @@ public class VcsVersionTask extends Task {
 		dateProp = dateProperty;
 	}
 
-	public void setURLProperty(String urlProperty) {
+	public void setUrlProperty(String urlProperty) {
 		urlProp = urlProperty;
 	}
 
