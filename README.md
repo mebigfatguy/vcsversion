@@ -2,7 +2,7 @@ vcsversion
 ==========
 
 An ant task to provide revision, date and branch properties of the project for use in a build.xml.
-Currently supports Git, Hg, Svn and Bazaar.
+Currently supports Git, Mercurial, Subversion, Bazaar and BitKeeper.
 
 Use as follows:
 
@@ -33,5 +33,5 @@ VcsVersion is available at maven central with:
 
         GroupId:    com.mebigfatguy.vcsversion
         ArtifactId: vcsversion
-        Version:    0.2.0
+        Version:    0.4.0
 
