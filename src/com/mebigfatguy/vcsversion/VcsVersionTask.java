@@ -34,7 +34,7 @@ import org.apache.tools.ant.Task;
 public class VcsVersionTask extends Task {
 
     private enum VcsType {
-        SVN("svn", "subversion"), GIT("git"), HG("hg", "mercurial"), BAZAAR("bzr", "bazaar"), BITKEEPER("bk", "bitkeeper");
+        SVN("svn", "subversion"), GIT("git"), HG("hg", "mercurial"), BAZAAR("bzr", "bazaar"), BITKEEPER("bk", "bitkeeper"), FOSSIL("fossil");
 
         private final List<String> aliases;
 
@@ -109,6 +109,10 @@ public class VcsVersionTask extends Task {
         case BITKEEPER:
             getBitKeeperInfo();
             break;
+            
+        case FOSSIL:
+        	getFossilInfo();
+        	break;
 
         default:
             throw new BuildException("Unknown vcs type: " + vcs);
@@ -316,6 +320,38 @@ public class VcsVersionTask extends Task {
 
         } catch (Exception e) {
             throw new BuildException("Failed getting hg log info", e);
+        }
+    }
+    
+    private void getFossilInfo() {
+    	
+        try {
+            Map<Pattern, String> vcsProps = new HashMap<Pattern, String>();
+            
+            if (revisionProp != null) {
+                Pattern revnoPattern = Pattern.compile(".*checkout:\\s*([0-9a-f]*)", Pattern.CASE_INSENSITIVE);
+                vcsProps.put(revnoPattern, revisionProp);
+            }
+            if (dateProp != null) {
+                Pattern timestampPattern = Pattern.compile("\".*checkout:\\s*[0-9a-f]*\\s*(.+)", Pattern.CASE_INSENSITIVE);
+                vcsProps.put(timestampPattern, dateProp);
+            }
+            if (branchProp != null) {
+                Pattern branchPattern = Pattern.compile("\"\\\".*tags:\\\\s*([^\\s]*)", Pattern.CASE_INSENSITIVE);
+                vcsProps.put(branchPattern, branchProp);
+            }
+
+            if (urlProp != null) {
+                Pattern urlPattern = Pattern.compile("\"\\\".*url:\\\\s*([^\\s]*)", Pattern.CASE_INSENSITIVE);
+                vcsProps.put(urlPattern, urlProp);
+            }
+
+            if (!vcsProps.isEmpty()) {
+                fetchInfo(vcsProps, "fossil", "status");
+            }
+
+        } catch (Exception e) {
+            throw new BuildException("Failed getting fossil log info", e);
         }
     }
 
