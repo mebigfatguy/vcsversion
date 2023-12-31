@@ -33,5 +33,5 @@ VcsVersion is available at maven central with:
 
         GroupId:    com.mebigfatguy.vcsversion
         ArtifactId: vcsversion
-        Version:    0.4.0
+        Version:    0.5.0
 
