@@ -329,20 +329,20 @@ public class VcsVersionTask extends Task {
             Map<Pattern, String> vcsProps = new HashMap<Pattern, String>();
             
             if (revisionProp != null) {
-                Pattern revnoPattern = Pattern.compile(".*checkout:\\s*([0-9a-f]*)", Pattern.CASE_INSENSITIVE);
+                Pattern revnoPattern = Pattern.compile("^checkout:\\s*([0-9a-f]*).*", Pattern.CASE_INSENSITIVE);
                 vcsProps.put(revnoPattern, revisionProp);
             }
             if (dateProp != null) {
-                Pattern timestampPattern = Pattern.compile("\".*checkout:\\s*[0-9a-f]*\\s*(.+)", Pattern.CASE_INSENSITIVE);
+                Pattern timestampPattern = Pattern.compile("^checkout:\\s*[0-9a-f]*\\s*(.+)", Pattern.CASE_INSENSITIVE);
                 vcsProps.put(timestampPattern, dateProp);
             }
             if (branchProp != null) {
-                Pattern branchPattern = Pattern.compile("\"\\\".*tags:\\\\s*([^\\s]*)", Pattern.CASE_INSENSITIVE);
+                Pattern branchPattern = Pattern.compile("^tags:\\s*([^\\s]*).*", Pattern.CASE_INSENSITIVE);
                 vcsProps.put(branchPattern, branchProp);
             }
 
             if (urlProp != null) {
-                Pattern urlPattern = Pattern.compile("\"\\\".*url:\\\\s*([^\\s]*)", Pattern.CASE_INSENSITIVE);
+                Pattern urlPattern = Pattern.compile("^url:\\\\s*([^\\s]*)", Pattern.CASE_INSENSITIVE);
                 vcsProps.put(urlPattern, urlProp);
             }
 
